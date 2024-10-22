@@ -12,6 +12,14 @@ module.exports = async (srv) => {
         req.reply(response)
     })
 
+    srv.on('READ', RootEntities, (req) => {
+        const entityInfo = cds.reflect(RootEntities);
+
+        console.log(entityInfo["@UI.Facets"]);
+
+        return cds.tx(req).run(req.query);
+    })
+
     srv.after(["READ"],RootEntities, async (response) => {
         //To avoid issues with cds watch when it is reloading
         if(!response) return;
